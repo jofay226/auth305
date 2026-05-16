@@ -1,6 +1,7 @@
 import type {Request, Response} from 'express';
 import { loginSchema, registerSchema } from '../libs/zod/zod.ts';
 import { authServices } from '../services/auth.services.ts';
+import { generateAccessToken, generateRefreshToken } from '../utils/generateToken.ts';
 
 export const registerController = async (req: Request, res: Response) => {
     const validationResult = registerSchema.safeParse(req.body);
@@ -29,7 +30,14 @@ export const loginController = async (req: Request, res: Response) => {
         return
     }
 
-    res.json(result)
+
+    res.cookie('refreshToken', generateRefreshToken(result.data?.id!), {
+        httpOnly: true,
+        secure: false, 
+        sameSite: "strict"
+    })
+    res.json(generateAccessToken(result.data?.id!))
+
 }
 
 
