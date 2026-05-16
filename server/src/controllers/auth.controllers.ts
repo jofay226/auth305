@@ -37,10 +37,13 @@ export const loginController = async (req: Request, res: Response) => {
         sameSite: "strict"
     })
     res.json(generateAccessToken(result.data?.id!))
-
 }
 
 
+
+export const verifyTokenController = (req: Request, res: Response) => {
+    res.json({message: "access granted"})
+}
 
 
 

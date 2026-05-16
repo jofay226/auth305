@@ -8,10 +8,10 @@ const REFRESH_TOKEN_SECRET = cryptoKeyGenerate();
 
 
 export const generateAccessToken = (id: string) => {
-    return jwt.sign(id, ACCESS_TOKEN_SECRET, {expiresIn: "1m"})
+    return jwt.sign({id}, ACCESS_TOKEN_SECRET, {expiresIn: "1m"})
 }
 
 
 export const generateRefreshToken = (id: string) => {
-    return jwt.sign(id, REFRESH_TOKEN_SECRET, {expiresIn: "3m"})
+    return jwt.sign({id}, REFRESH_TOKEN_SECRET, {expiresIn: "3m"})
 }
