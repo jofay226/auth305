@@ -22,7 +22,7 @@ export const loginController = async (req: Request, res: Response) => {
         return
     }
 
-    const result = await authServices.login(validationResult.data!)
+    const result  = await authServices.login(validationResult.data!) 
     
     if(result.statusCode === 401) {
         res.status(result.statusCode).json(result)
@@ -51,6 +51,13 @@ export const verifyTokenController = (req: Request, res: Response) => {
 }
 
 export const refreshController = async (req: Request, res: Response) => {
+    const refreshToken = req.cookies["refreshToken"];
+    if(!refreshToken){
+       return  res.status(401).json({message: "refresh token doesn't exists in cookie"})
+    }
+
+
+    console.log(refreshToken);
     
 }
 
