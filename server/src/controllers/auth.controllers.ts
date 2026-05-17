@@ -2,6 +2,7 @@ import type {Request, Response} from 'express';
 import { loginSchema, registerSchema } from '../libs/zod/zod.ts';
 import { authServices } from '../services/auth.services.ts';
 import { generateAccessToken, generateRefreshToken } from '../utils/generateToken.ts';
+import prisma from '../libs/prisma/prisma.ts';
 
 export const registerController = async (req: Request, res: Response) => {
     const validationResult = registerSchema.safeParse(req.body);
@@ -12,8 +13,6 @@ export const registerController = async (req: Request, res: Response) => {
     const result = await authServices.register(validationResult.data!)
     res.status(result.statusCode).json(result)
 }
-
-
 
 export const loginController = async (req: Request, res: Response) => {
     const validationResult = loginSchema.safeParse(req.body);
@@ -30,8 +29,16 @@ export const loginController = async (req: Request, res: Response) => {
         return
     }
 
+    const refreshToken = generateRefreshToken(result.data?.id!);
 
-    res.cookie('refreshToken', generateRefreshToken(result.data?.id!), {
+    await prisma.user.update({
+        where: {id: result.data?.id!},
+        data: {
+            refreshToken: refreshToken
+        }
+    })
+
+    res.cookie('refreshToken', refreshToken, {
         httpOnly: true,
         secure: false, 
         sameSite: "strict"
@@ -39,11 +46,12 @@ export const loginController = async (req: Request, res: Response) => {
     res.json(generateAccessToken(result.data?.id!))
 }
 
-
-
 export const verifyTokenController = (req: Request, res: Response) => {
     res.json({message: "access granted"})
 }
 
+export const refreshController = async (req: Request, res: Response) => {
+    
+}
 
 

@@ -2,8 +2,8 @@ import jwt from 'jsonwebtoken';
 import { cryptoKeyGenerate } from './generateCryptoKey.ts';
 
 
-const ACCESS_TOKEN_SECRET = cryptoKeyGenerate();
-const REFRESH_TOKEN_SECRET = cryptoKeyGenerate();
+export const ACCESS_TOKEN_SECRET = cryptoKeyGenerate();
+export const REFRESH_TOKEN_SECRET = cryptoKeyGenerate();
 
 
 
