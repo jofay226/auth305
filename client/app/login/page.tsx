@@ -3,8 +3,10 @@
 import { ChangeEvent, useState } from "react";
 import axios from "axios";
 import { useAuthStore } from "@/libs/zustand/authStore";
+import { useRouter } from "next/navigation";
 
 function LoginPage() {
+  const router = useRouter();
   const saveToken = useAuthStore((state) => state.actions.saveAccessToken);
   const [form, setForm] = useState({
     email: "",
@@ -21,6 +23,7 @@ function LoginPage() {
     });
     if (res.statusText === "OK") {
       saveToken(res.data);
+      router.push("/");
     }
     console.log(res);
   };
