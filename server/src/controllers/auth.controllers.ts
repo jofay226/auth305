@@ -1,8 +1,9 @@
 import type {Request, Response} from 'express';
 import { loginSchema, registerSchema } from '../libs/zod/zod.ts';
 import { authServices } from '../services/auth.services.ts';
-import { generateAccessToken, generateRefreshToken } from '../utils/generateToken.ts';
+import { generateAccessToken, generateRefreshToken, REFRESH_TOKEN_SECRET } from '../utils/generateToken.ts';
 import prisma from '../libs/prisma/prisma.ts';
+import jwt from 'jsonwebtoken';
 
 export const registerController = async (req: Request, res: Response) => {
     const validationResult = registerSchema.safeParse(req.body);
@@ -55,10 +56,16 @@ export const refreshController = async (req: Request, res: Response) => {
     if(!refreshToken){
        return  res.status(401).json({message: "refresh token doesn't exists in cookie"})
     }
+    try{
+        const isVerified : any = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET)
 
-
-    console.log(refreshToken);
-    
+        const newAccessToken = generateAccessToken(isVerified.id)
+        const newRefreshToken = generateRefreshToken(isVerified.id)
+        
+        res.json(newAccessToken)
+    } catch(e){
+        res.status(401).json({message: "invalid or expired refreshToken"})
+    } 
 }
 
 
