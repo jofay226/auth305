@@ -4,20 +4,15 @@ import { useVerifyToken } from "@/libs/tanstack/query";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-// import { useAuthStore } from "@/libs/zustand/authStore";
-
 export default function Home() {
-  // const accessToken = useAuthStore((state) => state.accessToken);
-  // console.log(`our access token : ${accessToken}`);
-  // const router = useRouter();
-  // const { data, isLoading } = useVerifyToken();
+  const router = useRouter();
+  const { data, isLoading } = useVerifyToken();
 
-  // useEffect(() => {
-  //   if (data?.status === 401) {
-  //     router.push("/login");
-  //   }
-  // }, [data, router]);
-  const isLoading = true;
+  useEffect(() => {
+    if (data?.status === 401) {
+      router.push("/login");
+    }
+  }, [data, router]);
 
   if (isLoading) {
     return (

@@ -1,11 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
-import { verifyToken, verifyTokenInstance } from "./api"
-import { useAuthStore } from "../zustand/authStore"
+import { verifyToken } from "./api"
+import { useIntercepter } from "@/hooks/useIntercepter"
 
 export const useVerifyToken = () => {
-    const accessToken = useAuthStore(state => state.accessToken)
+    const verifyTokenInstance = useIntercepter()
     return useQuery({
         queryKey: ["token"],
-        queryFn: () => verifyToken(verifyTokenInstance,accessToken)
+        queryFn: () => verifyToken(verifyTokenInstance)
     })
 }

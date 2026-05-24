@@ -10,13 +10,9 @@ export const verifyTokenInstance = axios.create({
 })
 
 
-export const verifyToken = async (verifyInstance: AxiosInstance, token: string) => {
+export const verifyToken = async (verifyInstance: AxiosInstance) => {
     try{
-        const res = await verifyInstance('/auth/verify', {
-            headers: {
-                "Authorization": `Bearer ${token}`
-            }
-        })
+        const res = await verifyInstance('/auth/verify')
         return res.data
     } catch(e){
         return {message: 'validation failed', status: 401}

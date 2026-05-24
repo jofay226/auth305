@@ -25,7 +25,6 @@ function LoginPage() {
       saveToken(res.data);
       router.push("/");
     }
-    console.log(res);
   };
 
   return (
