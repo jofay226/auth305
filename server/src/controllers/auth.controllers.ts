@@ -48,7 +48,7 @@ export const loginController = async (req: Request, res: Response) => {
 }
 
 export const verifyTokenController = (req: Request, res: Response) => {
-    res.json({message: "access granted"})
+    res.json({message: "access granted", status: 200})
 }
 
 export const refreshController = async (req: Request, res: Response) => {
