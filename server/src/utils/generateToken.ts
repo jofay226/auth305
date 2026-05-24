@@ -13,5 +13,5 @@ export const generateAccessToken = (id: string) => {
 
 
 export const generateRefreshToken = (id: string) => {
-    return jwt.sign({id}, REFRESH_TOKEN_SECRET, {expiresIn: "3m"})
+    return jwt.sign({id}, REFRESH_TOKEN_SECRET, {expiresIn: "2m"})
 }
